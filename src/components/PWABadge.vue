@@ -14,19 +14,17 @@ function registerPeriodicSync(swUrl: string, r: ServiceWorkerRegistration) {
   if (period <= 0) return
 
   setInterval(async () => {
-    if ('onLine' in navigator && !navigator.onLine)
-      return
+    if ('onLine' in navigator && !navigator.onLine) return
 
     const resp = await fetch(swUrl, {
       cache: 'no-store',
       headers: {
-        'cache': 'no-store',
-        'cache-control': 'no-cache',
-      },
+        cache: 'no-store',
+        'cache-control': 'no-cache'
+      }
     })
 
-    if (resp?.status === 200)
-      await r.update()
+    if (resp?.status === 200) await r.update()
   }, period)
 }
 
@@ -37,23 +35,19 @@ const { offlineReady, needRefresh, updateServiceWorker } = useRegisterSW({
     if (r?.active?.state === 'activated') {
       swActivated.value = true
       registerPeriodicSync(swUrl, r)
-    }
-    else if (r?.installing) {
+    } else if (r?.installing) {
       r.installing.addEventListener('statechange', (e) => {
         const sw = e.target as ServiceWorker
         swActivated.value = sw.state === 'activated'
-        if (swActivated.value)
-          registerPeriodicSync(swUrl, r)
+        if (swActivated.value) registerPeriodicSync(swUrl, r)
       })
     }
-  },
+  }
 })
 
 const title = computed(() => {
-  if (offlineReady.value)
-    return 'App ready to work offline'
-  if (needRefresh.value)
-    return 'New content available, click on reload button to update.'
+  if (offlineReady.value) return 'App ready to work offline'
+  if (needRefresh.value) return 'New content available, click on reload button to update.'
   return ''
 })
 
@@ -65,10 +59,10 @@ function close() {
 
 <template>
   <div
-      v-if="offlineReady || needRefresh"
-      class="pwa-toast"
-      aria-labelledby="toast-message"
-      role="alert"
+    v-if="offlineReady || needRefresh"
+    class="pwa-toast"
+    aria-labelledby="toast-message"
+    role="alert"
   >
     <div class="message">
       <span id="toast-message">
@@ -79,9 +73,7 @@ function close() {
       <button v-if="needRefresh" type="button" class="reload" @click="updateServiceWorker()">
         Reload
       </button>
-      <button type="button" @click="close">
-        Close
-      </button>
+      <button type="button" @click="close">Close</button>
     </div>
   </div>
 </template>
@@ -100,12 +92,15 @@ function close() {
   box-shadow: 3px 4px 5px 0 #8885;
   display: grid;
 }
+
 .pwa-toast .message {
   margin-bottom: 8px;
 }
+
 .pwa-toast .buttons {
   display: flex;
 }
+
 .pwa-toast button {
   border: 1px solid #8885;
   outline: none;
@@ -113,6 +108,7 @@ function close() {
   border-radius: 2px;
   padding: 3px 10px;
 }
+
 .pwa-toast button.reload {
   display: block;
 }
