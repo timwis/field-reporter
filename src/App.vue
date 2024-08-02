@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import PWABadge from './components/PWABadge.vue'
+import { RouterView } from 'vue-router'
+import PWABadge from '@/components/PWABadge.vue'
+import NavBar from '@/components/NavBar.vue'
 </script>
 
 <template>
-  <h1 class="text-3xl font-bold underline">Hello world!</h1>
+  <div class="min-h-full">
+    <NavBar />
+    <RouterView />
+  </div>
   <PWABadge />
 </template>
