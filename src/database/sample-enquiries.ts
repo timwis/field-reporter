@@ -3,8 +3,8 @@ import type { Enquiry } from '@/types'
 export const sampleEnquiries: Enquiry[] = [
   {
     id: '1',
-    created_at: new Date('2023-01-01T10:00:00Z'),
-    occurred_at: new Date('2023-01-01T09:00:00Z'),
+    created_at: new Date('2023-01-01T10:00:00Z').toISOString(),
+    occurred_at: new Date('2023-01-01T09:00:00Z').toISOString(),
     user_name: 'John Doe',
     location: {
       geometry: {
@@ -20,8 +20,8 @@ export const sampleEnquiries: Enquiry[] = [
   },
   {
     id: '2',
-    created_at: new Date('2023-02-01T11:00:00Z'),
-    occurred_at: new Date('2023-02-01T10:00:00Z'),
+    created_at: new Date('2023-02-01T11:00:00Z').toISOString(),
+    occurred_at: new Date('2023-02-01T10:00:00Z').toISOString(),
     user_name: 'Jane Smith',
     location: {
       geometry: {
@@ -37,8 +37,8 @@ export const sampleEnquiries: Enquiry[] = [
   },
   {
     id: '3',
-    created_at: new Date('2023-03-01T12:00:00Z'),
-    occurred_at: new Date('2023-03-01T11:00:00Z'),
+    created_at: new Date('2023-03-01T12:00:00Z').toISOString(),
+    occurred_at: new Date('2023-03-01T11:00:00Z').toISOString(),
     user_name: 'Alice Johnson',
     location: {
       geometry: {
@@ -54,8 +54,8 @@ export const sampleEnquiries: Enquiry[] = [
   },
   {
     id: '4',
-    created_at: new Date('2023-04-01T13:00:00Z'),
-    occurred_at: new Date('2023-04-01T12:00:00Z'),
+    created_at: new Date('2023-04-01T13:00:00Z').toISOString(),
+    occurred_at: new Date('2023-04-01T12:00:00Z').toISOString(),
     user_name: 'Bob Brown',
     location: {
       geometry: {
@@ -71,8 +71,8 @@ export const sampleEnquiries: Enquiry[] = [
   },
   {
     id: '5',
-    created_at: new Date('2023-05-01T14:00:00Z'),
-    occurred_at: new Date('2023-05-01T13:00:00Z'),
+    created_at: new Date('2023-05-01T14:00:00Z').toISOString(),
+    occurred_at: new Date('2023-05-01T13:00:00Z').toISOString(),
     user_name: 'Charlie Davis',
     location: {
       geometry: {

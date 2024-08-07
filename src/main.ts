@@ -1,14 +1,12 @@
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
 
 import './style.css'
+import { createDatabase } from './database'
 import App from './App.vue'
 import router from './router'
 
-const pinia = createPinia()
+const database = await createDatabase()
 const app = createApp(App)
-
 app.use(router)
-app.use(pinia)
-
+app.use(database)
 app.mount('#app')
