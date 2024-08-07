@@ -4,12 +4,12 @@ import PageHeader from '@/components/PageHeader.vue'
 
 const database = useDatabase()
 
-const STATUS_VALUES = {
-  pending: 'Pending',
-  attempted: 'Attempted',
-  completed: 'Completed',
-  cancelled: 'Cancelled'
-}
+const STATUS_VALUES = [
+  { value: 'pending', label: 'Pending' },
+  { value: 'attempted', label: 'Attempted' },
+  { value: 'completed', label: 'Completed' },
+  { value: 'cancelled', label: 'Cancelled' }
+]
 
 let enquiry = {
   location: {
@@ -48,13 +48,13 @@ async function onSubmit(_event: Event) {
               Address
             </label>
             <div class="mt-2">
-              <input
+              <InputText
                 id="address"
                 name="address"
                 v-model.trim="enquiry.location.address"
                 type="text"
                 placeholder="12 HIGH STREET, NW1"
-                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                class="w-full"
               />
             </div>
           </div>
@@ -79,12 +79,12 @@ async function onSubmit(_event: Event) {
               Result
             </label>
             <div class="mt-2">
-              <textarea
+              <Textarea
                 id="result"
                 name="result"
                 v-model.trim="enquiry.result"
                 rows="3"
-                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                class="w-full"
               />
             </div>
           </div>
@@ -94,29 +94,21 @@ async function onSubmit(_event: Event) {
               Status
             </label>
             <div class="mt-2">
-              <select
+              <Select
                 id="status"
                 name="status"
                 v-model="enquiry.status"
-                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-              >
-                <option v-for="(label, key) in STATUS_VALUES" :key="key" :value="key">
-                  {{ label }}
-                </option>
-              </select>
+                :options="STATUS_VALUES"
+                optionLabel="label"
+                optionValue="value"
+                class="w-full"
+              />
             </div>
           </div>
 
           <div class="mt-6 flex items-center justify-end gap-x-6">
-            <button type="button" class="text-sm font-semibold leading-6 text-gray-900">
-              Cancel
-            </button>
-            <button
-              type="submit"
-              class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Save
-            </button>
+            <Button label="Cancel" severity="secondary" />
+            <Button label="Save" type="submit" />
           </div>
         </div>
       </form>
