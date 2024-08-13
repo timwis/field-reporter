@@ -1,39 +1,30 @@
 <script setup lang="ts">
+import { RouterLink, useRouter } from 'vue-router'
+import { toRaw } from 'vue'
+import { v7 as uuidv7 } from 'uuid'
+
+import { RESULT_VALUES } from '@/types'
 import { useDatabase } from '@/database'
+import { useDraftStore } from '@/stores/draft'
 import PageHeader from '@/components/PageHeader.vue'
+import MapThumbnail from '@/components/MapThumbnail.vue'
 
 const database = useDatabase()
+const router = useRouter()
 
-const STATUS_VALUES = [
-  { value: 'pending', label: 'Pending' },
-  { value: 'attempted', label: 'Attempted' },
-  { value: 'completed', label: 'Completed' },
-  { value: 'cancelled', label: 'Cancelled' }
-]
-
-let enquiry = {
-  location: {
-    geometry: {
-      lat: 51.464795,
-      lng: -0.11303
-    },
-    address: ''
-  },
-  has_cameras: false,
-  result: '',
-  status: 'pending'
-}
+let draft = useDraftStore()
 
 async function onSubmit(_event: Event) {
-  console.log('Form submitted')
+  const created_at = new Date().toISOString()
   const augmentedEnquiry = {
-    ...enquiry,
-    id: Math.random().toString(36).substring(2, 10),
-    created_at: new Date().toISOString(),
-    occurred_at: new Date().toISOString(),
-    user_name: 'Tester'
+    ...toRaw(draft.$state),
+    id: uuidv7(),
+    created_at,
+    enquired_at: draft.enquired_at.toISOString()
   }
   await database.enquiries.insert(augmentedEnquiry)
+  draft.$reset()
+  router.push({ name: 'enquiries' })
 }
 </script>
 
@@ -45,32 +36,44 @@ async function onSubmit(_event: Event) {
         <div class="space-y-5">
           <div>
             <label for="address" class="block text-sm font-medium leading-6 text-gray-900">
+              Location
+            </label>
+            <div class="mt-2">
+              <RouterLink to="/new/location">
+                <MapThumbnail :location="draft.location_geometry" required />
+              </RouterLink>
+            </div>
+          </div>
+
+          <div>
+            <label for="case_reference" class="block text-sm font-medium leading-6 text-gray-900">
+              Case reference
+            </label>
+            <div class="mt-2">
+              <InputText
+                id="case_reference"
+                name="case_reference"
+                v-model.trim="draft.case_reference"
+                type="text"
+                placeholder="01/12345/XY"
+                class="w-full"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label for="address" class="block text-sm font-medium leading-6 text-gray-900">
               Address
             </label>
             <div class="mt-2">
               <InputText
                 id="address"
                 name="address"
-                v-model.trim="enquiry.location.address"
+                v-model.trim="draft.location_address"
                 type="text"
                 placeholder="12 HIGH STREET, NW1"
                 class="w-full"
               />
-            </div>
-          </div>
-
-          <div class="relative flex gap-x-3">
-            <div class="flex h-6 items-center">
-              <input
-                id="has_cameras"
-                name="has_cameras"
-                type="checkbox"
-                v-model="enquiry.has_cameras"
-                class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-              />
-            </div>
-            <div class="text-sm leading-6">
-              <label for="has_cameras" class="font-medium text-gray-900">Has camera(s)</label>
             </div>
           </div>
 
@@ -79,29 +82,48 @@ async function onSubmit(_event: Event) {
               Result
             </label>
             <div class="mt-2">
-              <Textarea
+              <Select
                 id="result"
                 name="result"
-                v-model.trim="enquiry.result"
-                rows="3"
+                v-model="draft.result"
+                :options="RESULT_VALUES"
+                optionLabel="label"
+                optionValue="value"
+                class="w-full"
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <label for="notes" class="block text-sm font-medium leading-6 text-gray-900">
+              Notes
+            </label>
+            <div class="mt-2">
+              <Textarea
+                id="notes"
+                name="notes"
+                v-model.trim="draft.notes"
+                rows="4"
                 class="w-full"
               />
             </div>
           </div>
 
           <div>
-            <label for="status" class="block text-sm font-medium leading-6 text-gray-900">
-              Status
+            <label for="enquired_at" class="block text-sm font-medium leading-6 text-gray-900">
+              Enquired at
             </label>
             <div class="mt-2">
-              <Select
-                id="status"
-                name="status"
-                v-model="enquiry.status"
-                :options="STATUS_VALUES"
-                optionLabel="label"
-                optionValue="value"
+              <DatePicker
+                id="enquired_at"
+                name="enquired_at"
+                v-model="draft.enquired_at"
                 class="w-full"
+                showTime
+                dateFormat="dd M yy"
+                hourFormat="24"
+                fluid
               />
             </div>
           </div>

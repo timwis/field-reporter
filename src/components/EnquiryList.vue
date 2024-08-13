@@ -48,21 +48,21 @@ const props = defineProps<{
             <td
               class="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-0"
             >
-              {{ enquiry.location.address }}
+              {{ enquiry.location_address }}
               <dl class="font-normal lg:hidden">
                 <dt class="sr-only">Occurred at</dt>
-                <dd class="mt-1 truncate text-gray-700">{{ enquiry.occurred_at }}</dd>
+                <dd class="mt-1 truncate text-gray-700">{{ enquiry.enquired_at }}</dd>
                 <dt class="sr-only sm:hidden">Result</dt>
-                <dd class="mt-1 truncate text-gray-500 sm:hidden">{{ enquiry.result }}</dd>
+                <dd class="mt-1 truncate text-gray-500 sm:hidden">{{ enquiry.notes }}</dd>
               </dl>
             </td>
             <td class="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
-              {{ enquiry.occurred_at }}
+              {{ enquiry.enquired_at }}
             </td>
-            <td class="px-3 py-4 text-sm text-gray-500">{{ enquiry.status }}</td>
+            <td class="px-3 py-4 text-sm text-gray-500">{{ enquiry.result }}</td>
             <td class="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
               <a href="#" class="text-indigo-600 hover:text-indigo-900"
-                >Edit<span class="sr-only">, {{ enquiry.location.address }}</span></a
+                >Edit<span class="sr-only">, {{ enquiry.location_address }}</span></a
               >
             </td>
           </tr>

@@ -1,21 +1,22 @@
 import type { RxJsonSchema } from 'rxdb'
 
+export type LatLngArray = [number, number]
+
+export const RESULT_VALUES = [
+  { label: 'Retrieved', value: 'retrieved' },
+  { label: 'Revisit', value: 'revisit' },
+  { label: 'Non-starter', value: 'non_starter' }
+]
+
 export interface Enquiry {
   id: string
   created_at: string
-  occurred_at: string
-  user_name: string
-  location: {
-    geometry: {
-      lat: number
-      lng: number
-    }
-    address: string
-    details?: string
-  }
-  status: 'pending' | 'attempted' | 'completed' | 'cancelled'
-  has_cameras: boolean
-  result: string
+  enquired_at: string
+  case_reference: string
+  location_address: string
+  location_geometry: LatLngArray
+  result: 'retrieved' | 'revisit' | 'non_starter'
+  notes: string
 }
 
 export const enquirySchema: RxJsonSchema<Enquiry> = {
@@ -23,41 +24,31 @@ export const enquirySchema: RxJsonSchema<Enquiry> = {
   primaryKey: 'id',
   type: 'object',
   properties: {
-    id: { type: 'string', maxLength: 100 },
-    created_at: { type: 'string', format: 'date-time' },
-    occurred_at: { type: 'string', format: 'date-time' },
-    user_name: { type: 'string' },
-    location: {
-      type: 'object',
-      properties: {
-        geometry: {
-          type: 'object',
-          properties: {
-            lat: { type: 'number' },
-            lng: { type: 'number' }
-          },
-          required: ['lat', 'lng']
-        },
-        address: { type: 'string' },
-        details: { type: 'string' }
-      },
-      required: ['geometry', 'address']
+    id: { type: 'string', maxLength: 100, final: true },
+    created_at: { type: 'string', format: 'date-time', final: true },
+    enquired_at: { type: 'string', format: 'date-time' },
+    case_reference: { type: 'string' },
+    location_address: { type: 'string' },
+    location_geometry: {
+      type: 'array',
+      items: { type: 'number' },
+      minItems: 2,
+      maxItems: 2
     },
-    status: {
+    result: {
       type: 'string',
-      enum: ['pending', 'attempted', 'completed', 'cancelled']
+      enum: ['retrieved', 'revisit', 'non_starter']
     },
-    has_cameras: { type: 'boolean' },
-    result: { type: 'string' }
+    notes: { type: 'string' }
   },
   required: [
     'id',
     'created_at',
-    'occurred_at',
-    'user_name',
-    'location',
-    'status',
-    'has_cameras',
-    'result'
+    'enquired_at',
+    'case_reference',
+    'location_address',
+    'location_geometry',
+    'result',
+    'notes'
   ]
 }
