@@ -57,6 +57,7 @@ async function onSubmit(_event: Event) {
                 type="text"
                 placeholder="01/12345/XY"
                 class="w-full"
+                required
               />
             </div>
           </div>
@@ -73,6 +74,7 @@ async function onSubmit(_event: Event) {
                 type="text"
                 placeholder="12 HIGH STREET, NW1"
                 class="w-full"
+                required
               />
             </div>
           </div>
@@ -124,6 +126,7 @@ async function onSubmit(_event: Event) {
                 dateFormat="dd M yy"
                 hourFormat="24"
                 fluid
+                required
               />
             </div>
           </div>
