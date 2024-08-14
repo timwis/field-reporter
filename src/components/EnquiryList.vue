@@ -26,6 +26,14 @@ const confirmDelete = (event, enquiry) => {
     }
   })
 }
+
+const dateTimeFormat = new Intl.DateTimeFormat('en-GB', {
+  dateStyle: 'medium',
+  timeStyle: 'short'
+})
+function renderDateTime(isoString: string) {
+  return dateTimeFormat.format(new Date(isoString))
+}
 </script>
 
 <template>
@@ -61,13 +69,13 @@ const confirmDelete = (event, enquiry) => {
             {{ enquiry.location_address }}
             <dl class="font-normal lg:hidden">
               <dt class="sr-only">Occurred at</dt>
-              <dd class="mt-1 truncate text-gray-700">{{ enquiry.enquired_at }}</dd>
+              <dd class="mt-1 truncate text-gray-700">{{ renderDateTime(enquiry.enquired_at) }}</dd>
               <dt class="sr-only sm:hidden">Result</dt>
               <dd class="mt-1 truncate text-gray-500 sm:hidden">{{ enquiry.notes }}</dd>
             </dl>
           </td>
           <td class="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">
-            {{ enquiry.enquired_at }}
+            {{ renderDateTime(enquiry.enquired_at) }}
           </td>
           <td class="px-3 py-4 text-sm text-gray-500">{{ enquiry.result }}</td>
           <td class="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
