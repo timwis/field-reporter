@@ -132,7 +132,7 @@ async function onSubmit(_event: Event) {
           </div>
 
           <div class="mt-6 flex items-center justify-end gap-x-6">
-            <Button label="Cancel" severity="secondary" />
+            <Button label="Cancel" severity="secondary" as="router-link" to="/" />
             <Button label="Save" type="submit" />
           </div>
         </div>

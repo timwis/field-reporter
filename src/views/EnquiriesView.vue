@@ -4,7 +4,6 @@ import PageHeader from '@/components/PageHeader.vue'
 import EnquiryList from '@/components/EnquiryList.vue'
 import type { Enquiry } from '@/types'
 import { useDatabase } from '@/database'
-import { sampleEnquiries } from '@/database/sample-enquiries'
 
 const enquiries = ref<Enquiry[]>([])
 const database = useDatabase()
@@ -17,9 +16,8 @@ onUnmounted(() => {
   subscription.unsubscribe()
 })
 
-async function loadSampleData() {
-  const response = await database.enquiries.bulkInsert(sampleEnquiries)
-  console.log(response)
+async function onDelete(enquiry: Enquiry) {
+  await enquiry.remove()
 }
 </script>
 
@@ -27,8 +25,13 @@ async function loadSampleData() {
   <PageHeader>Enquiries</PageHeader>
   <main>
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-      <button @click="loadSampleData" class="btn">Load Sample Data</button>
-      <EnquiryList :enquiries="enquiries" />
+      <RouterLink
+        to="/new"
+        class="block md:inline-block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+      >
+        Add enquiry
+      </RouterLink>
+      <EnquiryList :enquiries="enquiries" @delete="onDelete" />
     </div>
   </main>
 </template>

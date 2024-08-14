@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import { RouterLink } from 'vue-router'
+</script>
+
 <template>
   <header class="bg-indigo-600">
     <nav
@@ -5,7 +9,7 @@
       aria-label="Global"
     >
       <div class="flex items-center gap-x-12 text-lg text-white font-semibold">
-        <a href="#">Field Reporter</a>
+        <RouterLink to="/">Field Reporter</RouterLink>
       </div>
     </nav>
   </header>

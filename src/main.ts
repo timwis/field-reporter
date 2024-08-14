@@ -7,6 +7,8 @@ import Textarea from 'primevue/textarea'
 import Select from 'primevue/select'
 import Button from 'primevue/button'
 import DatePicker from 'primevue/datepicker'
+import ConfirmPopup from 'primevue/confirmpopup'
+import ConfirmationService from 'primevue/confirmationservice'
 
 import './style.css'
 import { createDatabase } from './database'
@@ -20,9 +22,11 @@ app.use(pinia)
 app.use(router)
 app.use(database)
 app.use(PrimeVue, { unstyled: true, pt: Aura })
+app.use(ConfirmationService)
 app.component('InputText', InputText)
 app.component('Textarea', Textarea)
 app.component('Select', Select)
 app.component('Button', Button)
 app.component('DatePicker', DatePicker)
+app.component('ConfirmPopup', ConfirmPopup)
 app.mount('#app')
