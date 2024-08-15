@@ -15,12 +15,10 @@ import { createDatabase } from './database'
 import App from './App.vue'
 import router from './router'
 
-const database = await createDatabase()
 const pinia = createPinia()
 const app = createApp(App)
 app.use(pinia)
 app.use(router)
-app.use(database)
 app.use(PrimeVue, { unstyled: true, pt: Aura })
 app.use(ConfirmationService)
 app.component('InputText', InputText)
@@ -29,4 +27,8 @@ app.component('Select', Select)
 app.component('Button', Button)
 app.component('DatePicker', DatePicker)
 app.component('ConfirmPopup', ConfirmPopup)
-app.mount('#app')
+;(async () => {
+  const database = await createDatabase()
+  app.use(database)
+  app.mount('#app')
+})()
