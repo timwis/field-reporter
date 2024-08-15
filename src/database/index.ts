@@ -5,6 +5,7 @@ import type { RxDocument, RxCollection, RxDatabase } from 'rxdb'
 import { RxDBDevModePlugin } from 'rxdb/plugins/dev-mode'
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie'
 import { wrappedValidateAjvStorage } from 'rxdb/plugins/validate-ajv'
+import { replicateWebRTC, getConnectionHandlerSimplePeer } from 'rxdb/plugins/replication-webrtc'
 
 import type { Enquiry } from '@/types'
 import { enquirySchema } from '@/types'
@@ -34,9 +35,26 @@ export async function createDatabase(): Promise<Plugin> {
     }
   })
 
+  const replicationPool = await replicateWebRTC({
+    collection: db.enquiries,
+    topic: 'field-reporter',
+    connectionHandlerCreator: getConnectionHandlerSimplePeer({
+      signalingServerUrl: 'wss://signaling.rxdb.info/'
+    }),
+    pull: {},
+    push: {}
+  })
+
+  replicationPool.error$.subscribe((err) => {
+    console.error(err)
+  })
+
   return {
     install(app: any) {
       app.provide(PLUGIN_KEY, db)
     }
   }
 }
+
+// Polyfill nextTick for SimplePeer (getConnectionHandlerSimplePeer)
+window.process ||= { nextTick: (fn, ...args) => setTimeout(() => fn(...args)) }
