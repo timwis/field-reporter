@@ -64,7 +64,7 @@ function renderDateTime(isoString: string) {
       <tbody class="divide-y divide-gray-200 bg-white">
         <tr v-for="enquiry in enquiries" :key="enquiry.id">
           <td
-            class="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-0"
+            class="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none"
           >
             {{ enquiry.location_address }}
             <dl class="font-normal lg:hidden">
@@ -78,7 +78,7 @@ function renderDateTime(isoString: string) {
             {{ renderDateTime(enquiry.enquired_at) }}
           </td>
           <td class="px-3 py-4 text-sm text-gray-500">{{ enquiry.result }}</td>
-          <td class="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+          <td class="py-4 pl-3 pr-4 text-right text-sm font-medium">
             <a
               href="#"
               class="text-indigo-600 hover:text-indigo-900"
