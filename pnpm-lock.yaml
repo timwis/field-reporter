@@ -27,6 +27,9 @@ importers:
       leaflet-easybutton:
         specifier: ^2.4.0
         version: 2.4.0
+      leaflet.locatecontrol:
+        specifier: ^0.81.1
+        version: 0.81.1
       npm-run-all2:
         specifier: ^6.2.2
         version: 6.2.2
@@ -2266,6 +2269,9 @@ packages:
 
   leaflet-easybutton@2.4.0:
     resolution: {integrity: sha512-O+qsQq4zTF6ds8VClnytobTH/MKalctlPpiA8L+bNKHP14J3lgJpvEd/jSpq9mHTI6qOzRAvbQX6wS6qNwThvg==}
+
+  leaflet.locatecontrol@0.81.1:
+    resolution: {integrity: sha512-ZtsdScGufPw330X3UIaGGjnfQ1NrhLySnlruWufIMnfzsHgQPz0+mSxsCQMVh7QgOBoefCGb/lioSejiaNx1EQ==}
 
   leaflet@1.9.4:
     resolution: {integrity: sha512-nxS1ynzJOmOlHp+iL3FyWqK89GtNL8U8rvlMOsQdTTssxZwCXh8N2NB3GDQOL+YR3XnWyZAxwQixURb+FA74PA==}
@@ -5744,6 +5750,8 @@ snapshots:
   leaflet-easybutton@2.4.0:
     dependencies:
       leaflet: 1.9.4
+
+  leaflet.locatecontrol@0.81.1: {}
 
   leaflet@1.9.4: {}
 

@@ -5,8 +5,6 @@
     ref="map"
     class="crosshairs"
     @ready="onMapReady()"
-    @locationfound="onLocationFound"
-    @move.once="onFirstMove"
   >
     <LTileLayer
       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -20,18 +18,14 @@
       @click="onClickSave"
       >Save Location</LControl
     >
-    <LCircleMarker
-      v-if="userLocation"
-      :lat-lng="userLocation"
-      :radius="userLocationAccuracy ? userLocationAccuracy / 2 : undefined"
-    />
   </LMap>
 </template>
 
 <script setup lang="ts">
 import { ref, defineProps, defineEmits } from 'vue'
-import type { LocationEvent } from 'leaflet'
-import { LMap, LTileLayer, LCircleMarker, LControl } from '@vue-leaflet/vue-leaflet'
+import { LMap, LTileLayer, LControl } from '@vue-leaflet/vue-leaflet'
+import LocateControl from 'leaflet.locatecontrol'
+import 'leaflet.locatecontrol/dist/L.Control.Locate.min.css'
 import 'leaflet/dist/leaflet.css'
 
 // TODO: Replace with L.LatLngExpression
@@ -48,35 +42,20 @@ const emit = defineEmits<{
 const DEFAULT_ZOOM = 13
 const DEFAULT_LOCATION = [51.4630654, -0.1154922]
 const LOCATED_ZOOM = 18
-const userLocation = ref<LatLngArray | null>(null)
-const userLocationAccuracy = ref<number | null>(null)
-let hasMoved = false
 const map = ref<InstanceType<typeof LMap> | null>(null)
 
 function onMapReady() {
-  map.value?.leafletObject.locate({
-    enableHighAccuracy: true,
-    maximumAge: 60000
+  const locateControl = new LocateControl({
+    locateOptions: { enableHighAccuracy: true, maximumAge: 60000 }
   })
+  locateControl.addTo(map.value?.leafletObject)
+  if (!props.location) locateControl.start()
 }
 
 function onClickSave() {
   if (!map.value) return
   const center = map.value.leafletObject.getCenter()
   emit('save', [center.lat, center.lng])
-}
-
-function onLocationFound(event: LocationEvent) {
-  console.log(event.latlng)
-  userLocation.value = [event.latlng.lat, event.latlng.lng]
-  userLocationAccuracy.value = event.accuracy
-  if (!props.location && !hasMoved) {
-    map.value?.leafletObject.setView(event.latlng, LOCATED_ZOOM)
-  }
-}
-
-function onFirstMove(_event: Event) {
-  hasMoved = true
 }
 </script>
 
